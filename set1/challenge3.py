@@ -4,6 +4,7 @@ Single-byte XOR cipher
 '''
 
 from string import ascii_uppercase
+import math
 
 charset = ascii_uppercase
 
@@ -50,7 +51,13 @@ def score_english(text):
         if ord(c) < 32 or ord(c) > 126:
             nonprintable += 1
 
-    return chisq + nonprintable
+    # give penalty for rare symbols
+    rare = 0
+    for c in text:
+        if c in "#@$%^&*<=>[]\\`{}|":
+            rare += 1
+
+    return chisq + nonprintable + math.log1p(rare)
 
 def xor_string(str, key):
     res = ''
