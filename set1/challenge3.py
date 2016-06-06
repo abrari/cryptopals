@@ -2,26 +2,29 @@
 Challenge 3:
 Single-byte XOR cipher
 '''
+
 from string import ascii_uppercase
+
+charset = ascii_uppercase
 
 def char_frequencies(str):
     count = {}
     freq = {}
     str = str.upper()
-    for c in ascii_uppercase:
+    for c in charset:
         count[c] = 0
 
-    alphabet_count = 0
+    char_count = 0
     for c in str:
         if c.isalpha():
-            alphabet_count += 1
+            char_count += 1
             count[c] += 1
 
     for c in count:
-        if alphabet_count == 0:
+        if char_count == 0:
             freq[c] = 99999999
         else:
-            freq[c] = float(count[c]) / float(alphabet_count)
+            freq[c] = float(count[c]) / float(char_count)
 
     return freq
 
@@ -35,13 +38,19 @@ def score_english(text):
     freq = char_frequencies(text)
 
     chisq = 0
-    for c in ascii_uppercase:
+    for c in charset:
         obs = freq[c]
         exp = english_freq[c]
         diff = obs - exp
         chisq += diff ** 2 / exp
 
-    return chisq
+    # give penalty for non-printable chars
+    nonprintable = 0
+    for c in text:
+        if ord(c) < 32 or ord(c) > 126:
+            nonprintable += 1
+
+    return chisq + nonprintable
 
 def xor_string(str, key):
     res = ''
