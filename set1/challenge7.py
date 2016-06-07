@@ -9,4 +9,8 @@ def aes_ecb_decrypt(ciphertext, key):
     aes = AES.new(key, AES.MODE_ECB)
     return aes.decrypt(ciphertext)
 
+def aes_ecb_encrypt(plaintext, key):
+    aes = AES.new(key, AES.MODE_ECB)
+    return aes.encrypt(plaintext)
+
 
